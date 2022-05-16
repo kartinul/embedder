@@ -72,6 +72,8 @@ function Home(props) {
     },
   ];
 
+  const setCustomURL = () => {};
+
   return (
     <>
       <Metas q={props} />
@@ -81,6 +83,9 @@ function Home(props) {
 
         <button type="submit">Submit</button>
       </form>
+      <button onClick={setCustomURL} style={{ color: "red", padding: "10px", marginTop: "20px", fontSize: "20px" }}>
+        Set custom URL
+      </button>
       <h1>https://embedder-rouge.vercel.app/?{text}</h1>
     </>
   );
@@ -99,7 +104,7 @@ function btn(meta) {
   return btns;
 }
 
-function Metas({ q }) {
+export function Metas({ q }) {
   console.log(q);
   return (
     <Head>
@@ -113,4 +118,5 @@ function Metas({ q }) {
     </Head>
   );
 }
+
 export default Home;
