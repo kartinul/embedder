@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "export": "next export",
     "lint": "next lint"
   },
+  "license": "MIT",
   "dependencies": {
     "next": "12.1.6",
     "react": "18.1.0",
