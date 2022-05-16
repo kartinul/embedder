@@ -1,4 +1,4 @@
-import { app, db } from "./firebaseConfig";
+import { app, db } from "../firebaseConfig";
 import { getDocs, collection, getDoc, doc } from "firebase/firestore";
 import { Metas } from "./index";
 const querystring = require("query-string");
