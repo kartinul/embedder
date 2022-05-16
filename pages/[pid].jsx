@@ -1,12 +1,22 @@
 import { app, db } from "../firebaseConfig";
-import { getDocs, collection, getDoc, doc } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { Metas } from "./index";
 const querystring = require("query-string");
 
 export async function getServerSideProps({ params }) {
   const urls = collection(db, "urls");
-  const current = await getDoc(doc(urls, params.pid));
-  const data = current.data();
+  const current = await getDocs(urls);
+  const date = new Date();
+  let data = null;
+  console.log(date.getDate());
+  current.forEach((x) => {
+    if (x.data().exiry < date.getDate()) {
+      deleteDoc(doc(db, x.id));
+    }
+    if (x.data().id === params.pid) {
+      data = x.data();
+    }
+  });
   let re;
   if (data) {
     const split = data.url.split("/");

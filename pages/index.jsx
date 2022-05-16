@@ -1,10 +1,18 @@
 import Head from "next/head";
 import { useState } from "react";
-const querystring = require("querystring");
+import { db } from "../firebaseConfig";
+import { setDoc, collection, getDocs, addDoc, doc } from "firebase/firestore";
 
-export function getServerSideProps({ query }) {
+import querystring from "querystring";
+
+export async function getServerSideProps({ query }) {
+  let idDoc = await getDocs(collection(db, "urls"));
+  let ids = [];
+  idDoc.forEach((y) => {
+    ids.push(y.data().id);
+  });
   return {
-    props: { ...query },
+    props: { ...query, ids },
   };
 }
 
@@ -26,8 +34,7 @@ function toTitleCase(s) {
 function Home(props) {
   let [text, setText] = useState("");
 
-  const onFormSubmit = (e) => {
-    e.preventDefault();
+  const onFormSubmit = () => {
     const q = {
       title: g("title"),
       desc: g("desc"),
@@ -36,8 +43,8 @@ function Home(props) {
       color: g("color"),
       big: g("big", "checked"),
     };
-    console.log(q);
-    setText(querystring.encode(q));
+    setText("?" + querystring.encode(q));
+    return querystring.encode(q);
   };
 
   const meta = [
@@ -72,21 +79,69 @@ function Home(props) {
     },
   ];
 
-  const setCustomURL = () => {};
+  const randId = () => {
+    const alphabets = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+    const rand = "";
+    for (let i = 0; i < 4; i++) {
+      rand += alphabets[Math.floor(Math.random() * alphabets.length)];
+    }
+    return rand;
+  };
+
+  let form;
+  const setCustomURL = () => {
+    onFormSubmit();
+    const url = document.getElementById("url");
+
+    let rand;
+    do {
+      rand = randId();
+      console.log(rand);
+    } while (props.ids.includes(rand));
+
+    if (!g("title")) {
+      return;
+    }
+    const date = new Date();
+    addDoc(collection(db, "urls"), {
+      id: randId(),
+      url: url.innerHTML,
+      exiry: date.getDate() + 2,
+    }).then();
+    Array.of(document.querySelectorAll("input")).forEach((x) =>
+      console.log(
+        x.forEach((y) => {
+          y.value = "";
+          y.checked = false;
+        })
+      )
+    );
+    document.querySelector("textarea").value = "";
+    setText(rand);
+  };
 
   return (
     <>
       <Metas q={props} />
       <h1>Embed maker</h1>
-      <form className="form" onSubmit={onFormSubmit}>
+      <form
+        ref={form}
+        className="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onFormSubmit();
+        }}
+      >
         {btn(meta)}
 
-        <button type="submit">Submit</button>
+        <button id="submit" type="submit">
+          Submit
+        </button>
       </form>
       <button onClick={setCustomURL} style={{ color: "red", padding: "10px", marginTop: "20px", fontSize: "20px" }}>
         Set custom URL
       </button>
-      <h1>https://embedder-rouge.vercel.app/?{text}</h1>
+      <h1 id="url">https://embedder-rouge.vercel.app/{text}</h1>
     </>
   );
 }
@@ -105,7 +160,6 @@ function btn(meta) {
 }
 
 export function Metas({ q }) {
-  console.log(q);
   return (
     <Head>
       {/* /?title=Amogus Very gud website&color=#fff&desc=susy baka&head=mango Boy!&img=https://cdn.discordapp.com/icons/102860784329052160/a_4fbc177539c73d884393602c62be8a38.gif?size=128&big=yes */}
