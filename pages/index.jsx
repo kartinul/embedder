@@ -104,7 +104,7 @@ function Home(props) {
     }
     const date = new Date();
     addDoc(collection(db, "urls"), {
-      id: randId(),
+      id: rand,
       url: url.innerHTML,
       exiry: date.getDate() + 2,
     }).then();
