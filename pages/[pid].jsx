@@ -8,9 +8,8 @@ export async function getServerSideProps({ params }) {
   const current = await getDocs(urls);
   const date = new Date();
   let data = null;
-  console.log(date.getDate());
   current.forEach((x) => {
-    if (x.data().exiry < date.getDate()) {
+    if (x.data().expiry < date.getDate()) {
       deleteDoc(doc(db, x.id));
     }
     if (x.data().id === params.pid) {
@@ -19,9 +18,7 @@ export async function getServerSideProps({ params }) {
   });
   let re;
   if (data) {
-    const split = data.url.split("/");
-    const search = split[split.length - 1];
-    re = querystring.parse(search);
+    re = querystring.parse(data.query);
   } else {
     re = null;
   }

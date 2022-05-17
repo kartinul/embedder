@@ -9,10 +9,10 @@ export async function getServerSideProps({ query }) {
   let idDoc = await getDocs(collection(db, "urls"));
   let ids = [];
   idDoc.forEach((y) => {
-    ids.push(y.data().id);
+    ids.push(y.data().id || null);
   });
   return {
-    props: { ...query, ids },
+    props: { ...query, ids: ids },
   };
 }
 
@@ -90,31 +90,29 @@ function Home(props) {
 
   let form;
   const setCustomURL = () => {
-    onFormSubmit();
-    const url = document.getElementById("url");
+    const url = onFormSubmit();
 
     let rand;
     do {
       rand = randId();
-      console.log(rand);
     } while (props.ids.includes(rand));
 
     if (!g("title")) {
       return;
     }
+
     const date = new Date();
     addDoc(collection(db, "urls"), {
       id: rand,
-      url: url.innerHTML,
-      exiry: date.getDate() + 2,
+      query: url,
+      expiry: date.getDate() + 2,
     }).then();
+
     Array.of(document.querySelectorAll("input")).forEach((x) =>
-      console.log(
-        x.forEach((y) => {
-          y.value = "";
-          y.checked = false;
-        })
-      )
+      x.forEach((y) => {
+        y.value = "";
+        y.checked = false;
+      })
     );
     document.querySelector("textarea").value = "";
     setText(rand);
