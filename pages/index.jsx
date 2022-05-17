@@ -5,14 +5,14 @@ import { setDoc, collection, getDocs, addDoc, doc } from "firebase/firestore";
 
 import querystring from "querystring";
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query, req }) {
   let idDoc = await getDocs(collection(db, "urls"));
   let ids = [];
   idDoc.forEach((y) => {
     ids.push(y.data().id || null);
   });
   return {
-    props: { ...query, ids: ids },
+    props: { ...query, ids: ids, host: req.headers.host },
   };
 }
 
@@ -33,6 +33,7 @@ function toTitleCase(s) {
 
 function Home(props) {
   let [text, setText] = useState("");
+  const dom = props.host;
 
   const onFormSubmit = () => {
     const q = {
@@ -140,7 +141,9 @@ function Home(props) {
         Set custom URL
       </button>
       <h1 id="url">
-        https://{window.location.hostname}/{text}
+        <a href={`http://${dom}/${text}`}>
+          http://{dom}/{text}
+        </a>
       </h1>
     </>
   );
