@@ -49,6 +49,10 @@ function Home(props) {
 
   const meta = [
     {
+      id: "head",
+      defaultValue: props.head,
+    },
+    {
       id: "title",
       defaultValue: props.title,
     },
@@ -56,10 +60,6 @@ function Home(props) {
       id: "desc",
       name: "Description",
       defaultValue: props.desc,
-    },
-    {
-      id: "head",
-      defaultValue: props.head,
     },
     {
       id: "img",
@@ -139,7 +139,9 @@ function Home(props) {
       <button onClick={setCustomURL} style={{ color: "red", padding: "10px", marginTop: "20px", fontSize: "20px" }}>
         Set custom URL
       </button>
-      <h1 id="url">https://embedder-rouge.vercel.app/{text}</h1>
+      <h1 id="url">
+        https://{window.location.hostname}/{text}
+      </h1>
     </>
   );
 }
