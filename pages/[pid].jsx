@@ -10,7 +10,8 @@ export async function getServerSideProps({ params }) {
   let data = null;
   current.forEach((x) => {
     if (x.data().expiry < date.getDate()) {
-      deleteDoc(doc(db, x.id));
+      console.log(x.id);
+      deleteDoc(x.ref);
     }
     if (x.data().id === params.pid) {
       data = x.data();
