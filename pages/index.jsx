@@ -23,7 +23,7 @@ const g = (t, custom) => {
 
 function toTitleCase(s) {
   s = s || "";
-  return s.toLowerCase().replace(/\b((m)(a?c))?(\w)/g, function ($1, $2, $3, $4, $5) {
+  return s.toLowerCase()?.replace(/\b((m)(a?c))?(\w)/g, function ($1, $2, $3, $4, $5) {
     if ($2) {
       return $3.toUpperCase() + $4 + $5.toUpperCase();
     }
@@ -38,7 +38,7 @@ function Home(props) {
   const onFormSubmit = () => {
     const q = {
       title: g("title"),
-      desc: g("desc").replace("<", "%3C").replace(">", "%3E"),
+      desc: g("desc")?.replace("<", "%3C")?.replace(">", "%3E"),
       head: g("head"),
       img: g("img"),
       color: g("color"),
@@ -160,7 +160,7 @@ function btn(meta) {
           type={x.type || "text"}
           name={x.id}
           id={x.id}
-          defaultValue={x.defaultValue.replace("%3C", "<").replace("%3E", ">")}
+          defaultValue={x.defaultValue?.replace("%3C", "<")?.replace("%3E", ">")}
         ></textarea>
       );
       return;
@@ -182,7 +182,7 @@ export function Metas({ q, children }) {
       {/* /?title=Amogus Very gud website&color=#fff&desc=susy baka&head=mango Boy!&img=https://cdn.discordapp.com/icons/102860784329052160/a_4fbc177539c73d884393602c62be8a38.gif?size=128&big=yes */}
       <meta name="theme-color" content={q.color} />
       <meta property="og:title" content={q.title} />
-      <meta property="og:description" content={q.desc.replace("%3C", "<").replace("%3E", ">")} />
+      <meta property="og:description" content={q.desc?.replace("%3C", "<")?.replace("%3E", ">")} />
       <meta property="og:site_name" content={q.head} />
       <meta property="og:image" content={q.img} />
       {q.big === "true" ? <meta name="twitter:card" content="summary_large_image" /> : <></>}
