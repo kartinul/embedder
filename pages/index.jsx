@@ -18,7 +18,7 @@ export async function getServerSideProps({ query, req }) {
 
 const g = (t, custom) => {
   custom = custom || "value";
-  return document.getElementById(t)[custom];
+  return document.getElementById(t)[custom].replaceAll(/</gi, "⪡").replace(/>/gi, "⪢");
 };
 
 function toTitleCase(s) {
@@ -38,7 +38,7 @@ function Home(props) {
   const onFormSubmit = () => {
     const q = {
       title: g("title"),
-      desc: g("desc").replace("<", "⪡").replace(">", "⪢"),
+      desc: g("desc"),
       head: g("head"),
       img: g("img"),
       color: g("color"),
