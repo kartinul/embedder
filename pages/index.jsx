@@ -18,7 +18,7 @@ export async function getServerSideProps({ query, req }) {
 
 const g = (t, custom) => {
   custom = custom || "value";
-  return document.getElementById(t)[custom].replaceAll(/</gi, "⪡").replace(/>/gi, "⪢");
+  return document.getElementById(t)[custom].replace(/</gi, "⪡").replace(/>/gi, "⪢");
 };
 
 function toTitleCase(s) {
