@@ -38,7 +38,7 @@ function Home(props) {
   const onFormSubmit = () => {
     const q = {
       title: g("title"),
-      desc: g("desc"),
+      desc: g("desc").replace("<", "%3C").replace(">", "%3E"),
       head: g("head"),
       img: g("img"),
       color: g("color"),
@@ -153,10 +153,16 @@ function Home(props) {
 function btn(meta) {
   let btns = [];
   meta.forEach((x) => {
-    console.log(x.defaultValue);
     btns.push(<label htmlFor={x.id}>{x.name || toTitleCase(x.id)}</label>);
     if (x.id === "desc") {
-      btns.push(<textarea type={x.type || "text"} name={x.id} id={x.id} defaultValue={x.defaultValue}></textarea>);
+      btns.push(
+        <textarea
+          type={x.type || "text"}
+          name={x.id}
+          id={x.id}
+          defaultValue={x.defaultValue.replace("%3C", "<").replace("%3E", ">")}
+        ></textarea>
+      );
       return;
     }
     if (x.id === "big" && x.defaultValue) {
@@ -166,7 +172,6 @@ function btn(meta) {
 
     btns.push(<input type={x.type || "text"} name={x.id} id={x.id} defaultValue={x.defaultValue} />);
   });
-  console.log(btns);
   return btns;
 }
 
@@ -177,7 +182,7 @@ export function Metas({ q, children }) {
       {/* /?title=Amogus Very gud website&color=#fff&desc=susy baka&head=mango Boy!&img=https://cdn.discordapp.com/icons/102860784329052160/a_4fbc177539c73d884393602c62be8a38.gif?size=128&big=yes */}
       <meta name="theme-color" content={q.color} />
       <meta property="og:title" content={q.title} />
-      <meta property="og:description" content={q.desc} />
+      <meta property="og:description" content={q.desc.replace("%3C", "<").replace("%3E", ">")} />
       <meta property="og:site_name" content={q.head} />
       <meta property="og:image" content={q.img} />
       {q.big === "true" ? <meta name="twitter:card" content="summary_large_image" /> : <></>}

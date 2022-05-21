@@ -11,7 +11,6 @@ export async function getServerSideProps({ params, req }) {
   let url;
   current.forEach((x) => {
     if (x.data().expiry < date.getDate()) {
-      console.log(x.id);
       deleteDoc(x.ref);
     }
     if (x.data().id === params.pid) {
@@ -26,7 +25,6 @@ export async function getServerSideProps({ params, req }) {
     re = null;
     url = req.headers.host;
   }
-  console.log(url);
   return {
     props: { ...params, re, url },
   };
@@ -34,7 +32,6 @@ export async function getServerSideProps({ params, req }) {
 
 const Post = (props) => {
   const { pid, re } = props;
-  console.log(props.url);
   return (
     <>
       {re ? (
