@@ -75,7 +75,8 @@ function Home(props) {
     {
       id: "big",
       name: "Big image",
-      defaultValue: !!props.big,
+      customDefaultValue: "checked",
+      defaultValue: props.big === "true",
       type: "checkbox",
     },
   ];
@@ -152,17 +153,25 @@ function Home(props) {
 function btn(meta) {
   let btns = [];
   meta.forEach((x) => {
+    console.log(x.defaultValue);
     btns.push(<label htmlFor={x.id}>{x.name || toTitleCase(x.id)}</label>);
     if (x.id === "desc") {
       btns.push(<textarea type={x.type || "text"} name={x.id} id={x.id} defaultValue={x.defaultValue}></textarea>);
-    } else {
-      btns.push(<input type={x.type || "text"} name={x.id} id={x.id} defaultValue={x.defaultValue} />);
+      return;
     }
+    if (x.id === "big" && x.defaultValue) {
+      btns.push(<input type={x.type || "text"} name={x.id} id={x.id} defaultChecked={x.defaultValue} />);
+      return;
+    }
+
+    btns.push(<input type={x.type || "text"} name={x.id} id={x.id} defaultValue={x.defaultValue} />);
   });
+  console.log(btns);
   return btns;
 }
 
-export function Metas({ q }) {
+export function Metas({ q, children }) {
+  children = children || <></>;
   return (
     <Head>
       {/* /?title=Amogus Very gud website&color=#fff&desc=susy baka&head=mango Boy!&img=https://cdn.discordapp.com/icons/102860784329052160/a_4fbc177539c73d884393602c62be8a38.gif?size=128&big=yes */}
@@ -172,6 +181,7 @@ export function Metas({ q }) {
       <meta property="og:site_name" content={q.head} />
       <meta property="og:image" content={q.img} />
       {q.big === "true" ? <meta name="twitter:card" content="summary_large_image" /> : <></>}
+      {children}
     </Head>
   );
 }
