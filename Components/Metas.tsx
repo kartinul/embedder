@@ -11,7 +11,7 @@ export function Metas(props: any) {
       <meta property="og:description" content={query.desc} />
       <meta property="og:site_name" content={query.head} />
       <meta property="og:image" content={query.img} />
-      {query.big === "true" ? <meta name="twitter:card" content="summary_large_image" /> : <></>}
+      {query.big ? <meta name="twitter:card" content="summary_large_image" /> : <></>}
       {children}
     </Head>
   );
