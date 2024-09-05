@@ -12,6 +12,7 @@ export function Metas(props: any) {
       <meta property="og:site_name" content={query.head} />
       <meta property="og:image" content={query.img} />
       <meta content={query.img} itemProp="image"></meta>
+      <meta property="twitter:image" content={query.img} />
       {query.big ? <meta name="twitter:card" content="summary_large_image" /> : <></>}
       {children}
     </Head>
