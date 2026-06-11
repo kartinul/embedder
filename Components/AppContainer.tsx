@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { EmbedPreview } from "./EmbedPreview";
+import { Container, Box } from "@radix-ui/themes";
 import { InputContainer } from "./InputContainer";
 
 interface AppContainerProps {
@@ -10,9 +9,9 @@ interface AppContainerProps {
 
 const AppContainer = (props: AppContainerProps) => {
   return (
-    <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
+    <Container size="4" px="4" py="8">
       <InputContainer ids={props.ids} dom={props.dom} query={props.query} />
-    </div>
+    </Container>
   );
 };
 

@@ -1,7 +1,6 @@
 import { app, db } from "../firebaseConfig";
 import { getDocs, collection, deleteDoc, doc, DocumentData } from "firebase/firestore";
 import { Metas } from "../Components/Metas";
-import querystring from "querystring";
 
 export async function getServerSideProps({ params, req }: { params: any; req: { headers: { host: string } } }) {
   const urls = collection(db, "urls");
